@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+		name="viewport">
+  <meta content="ie=edge" http-equiv="X-UA-Compatible">
+  <title>Document</title>
+  <style>
+	div {
+	  width: 200px;
+	  height: 40px;
+	  margin-top: 5px;
+	  background-color: gray;
+	}
+  </style>
+</head>
+<body>
+<label for="ipt">输入框：<input id="ipt" oninput="change()" type="text"></label>
+<div></div>
+<script>
+  const ipt = document.querySelector('input')
+  const div = document.querySelector('div')
+  const data = {
+	ipt: '',
+	div: ''
+  }
+  const p = new Proxy(data, {
+	get(target, key) {
+	  return target[key]
+	},
+	set(target, key, value) {
+	  target[key] = value
+	  console.log(p.ipt)
+	  ipt.value = p.ipt
+	  div.innerText = p.ipt
+	}
+  })
+  
+  function change() {
+	p.ipt = ipt.value
+	p.div = ipt.value
+	ipt.value = p.ipt
+	div.innerText = p.div
+	// console.log(data)
+  }
+
+
+</script>
+</body>
+</html>

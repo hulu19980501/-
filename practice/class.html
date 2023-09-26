@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function Student(age, name, gender) {
+            this.age = age;
+            this.name = name;
+            this.gender = gender;
+        }
+
+        Student.prototype.study = function () {
+            console.log(`I'm studying ${this.gender} ${this.name}'s course.`);
+        };
+
+        // 创建实例  
+        const student1 = new Student(18, "Tom", "Male");
+        student1.study();
+
+        // 输出结果:I'm studying Male Tom's course.  
+        class Student {
+            constructor(age, name, gender) {
+                this.age = age;
+                this.name = name;
+                this.gender = gender;
+            }
+
+            study() {
+                console.log(`I'm studying ${this.gender} ${this.name}'s course.`);
+            }
+        }
+
+        // 创建实例  
+        const student2 = new Student(18, "Tom", "Male");
+        student2.study();
+
+// 输出结果:I'm studying Male Tom's course.  
+
+    </script>
+</body>
+
+</html>

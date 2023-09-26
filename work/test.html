@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        #box{
+            margin: 50px;
+            padding: 50px;
+            overflow: hidden;
+        }
+        #content{
+            height: 150px;
+            width: 50px;
+            border: 1px solid #ccc;
+            border-bottom: 2px solid #ccc;
+            overflow: hidden;
+            padding: 0 20px;
+            float: left;
+        }
+        #scroll{
+            float: left;
+            height: 150px;
+            width: 5px;
+            border:1px solid #ccc;
+            border-bottom: 2px solid #ccc;
+
+        }
+        #scrollTrack{
+            background: #00b1fd;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <div id="box">
+        <div id="content">
+            天气还是非常好的呀好的呀
+            天气还是非常好的呀好的呀
+            天气还是非常好的呀好的呀
+            天气还是非常好的呀好的呀
+            天气还是非常好的呀好的呀
+            天气还是非常好的呀好的呀
+        </div>
+        <div id="scroll">
+            <div id="scrollTrack">
+                
+            </div>
+        </div>
+    </div>
+    <script>
+        let content = document.getElementById('content')
+        let scroll = document.getElementById('scroll')
+        let scrollTrack = document.getElementById('scrollTrack')
+        //判断是否需要滚动条 
+        if(content.clientHeight < content.scrollHeight ){
+        //滚动条的高度 / 轨道高度 = 盒子高度 / 内容高度
+            scrollTrack.style.height  = content.clientHeight/content.scrollHeight*scroll.offsetHeight + 'px'
+        }
+        //拖动事件
+        scrollTrack.onmousedown = function(e){
+            //鼠标滚动条中的高度 = 鼠标的Y轴坐标 - 滚动条距离Body的高度
+            let mouseY = e.pageY - scrollTrack.offsetTop 
+            //滚动条在轨道中的偏移距离 =  鼠标的Y轴坐标 - 轨道距离body的高度 - 鼠标在滚动条中的高度
+            let Y = e.pageY - scroll.offsetTop -mouseY
+            //滚动条的最大滚动距离 = 轨道高度 - 滚动条高度 
+            let maxY = scroll.offsetHeight - scrollTrack.offsetHeight;
+            document.onmousemove = function(e){
+                Y = e.pageY - scroll.offsetTop  -mouseY
+                if(Y < 0){
+                    Y = 0
+                }
+                if(Y > maxY){
+                    Y = maxY
+                }
+                //设置滚动条在轨道中的距离上方的距离  
+                scrollTrack.style.marginTop = Y +'px'
+                //内容的滚动距离 = 滚动条的滚动距离 / 最大滚动距离  * 内容最大滚动距离
+                content.scrollTop = Y/maxY*(content.scrollHeight - content.offsetHeight)
+            }            
+        }
+        //滚轮事件
+        scroll.onmouseenter = function(e){
+            //滚动条的滚动距离 = 鼠标的Y轴坐标 - 滚动条距离Body的高度
+            let Y = e.pageY - scroll.offsetTop
+            //滚动条的最大滚动距离 = 轨道高度 - 滚动条高度 
+            let maxY = scroll.offsetHeight - scrollTrack.offsetHeight;
+            document.onmousewheel = function(e){
+                // 内容的滚动距离 = 内容本来滚动的距离 + 滚轴相对滚动的距离
+                content.scrollTop = content.scrollTop - e.wheelDelta
+                // 滚轮滚动距离 = 内容滚动距离 /内容最大滚动距离 * 滚动条最大滚动距离
+                //-2 是为了防止滚动条溢出轨道
+                scrollTrack.style.marginTop = (content.scrollTop ) / ( content.scrollHeight - content.offsetHeight) * ( maxY-2) +'px'
+            }  
+        }
+        document.onmouseup = function(){
+            document.onmousemove = null;
+        }
+        scroll.onmouseleave = function(){
+            document.onmousewheel = null;
+        }
+    </script>
+</body>
+</html>
